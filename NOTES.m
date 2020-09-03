@@ -17,6 +17,10 @@
 %% Exclude subjects based on number of looking trials
 % criteria: learning trials > 11; standard trial > 3; omission trial > 3
 % as well as other factors such as parents talking, cap position etc.
+% Manually excluded
+
+%% Extract number of trials before motion correction
+% use function extract_trial_num.m
 
 %% Run motion corrections
 
