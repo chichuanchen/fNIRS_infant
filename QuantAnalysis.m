@@ -9,6 +9,7 @@ SMinterval = [0 3]; % seconds
 conditions={'Learning','Standard','Omission'};
 ch_location=[25 46 28 32 47 26 48 35 27 39 33 49 40 34 42 41 15 16 8 17 9 1 2 10 3];
 
+%
 nirs_dir = uigetdir(pwd,'Select NIRx Data Folder...');
 filelist = dir(fullfile(nirs_dir,'*.nirs'));
 
@@ -31,37 +32,37 @@ ch_list=SD.MeasList;
 
 clear SD aux d ml procInput procResult s t tIncMan userdata
 
-%% plot channel signals 
-
-% Assign 25 channel locations on the plot
-for cond=1:size(dcAvg_gp, 4)
-    
-    figure('Name', conditions{cond},'NumberTitle','off','WindowState','maximized')
-
-%     ymin=min(reshape(mean(dcAvg_gp(:,1:2,:,cond,:),5, 'omitnan')*sclConc,1,[]));
-%     ymax=max(reshape(mean(dcAvg_gp(:,1:2,:,cond,:),5, 'omitnan')*sclConc,1,[]));
-    
-    for channel=1:size(dcAvg_gp,3)
-
-        subplot(7,7,ch_location(channel), 'replace')
-        
-        SigHbO=mean(dcAvg_gp(:,1,channel,cond,:),5,'omitnan')*sclConc;
-        SigHbR=mean(dcAvg_gp(:,2,channel,cond,:),5,'omitnan')*sclConc;
-        
-        plot(tHRF,SigHbO,'color','r','linewidth',2), hold on
-        plot(tHRF,SigHbR,'color','b','linewidth',2)
-        
-        plot([tHRF(1) tHRF(end)],[0 0],'k-','linewidth',2)
-%          plot([0 0],[ymin ymax],'k-','linewidth',2)
-        title(['S' num2str(ch_list(channel,1)) '-D' num2str(ch_list(channel,2))])
-%          axis([tHRF(1) tHRF(end) ymin ymax])
-        axis off
-%         if channel==1
-%             legend('HbO','HbR','Location','westoutside')
-%         end
-    end
-    legend({'HbO','HbR'},'Position', [0.3 0.3 0.05 0.05])
-end
+% %% plot channel signals 
+% 
+% % Assign 25 channel locations on the plot
+% for cond=1:size(dcAvg_gp, 4)
+%     
+%     figure('Name', conditions{cond},'NumberTitle','off','WindowState','maximized')
+% 
+% %     ymin=min(reshape(mean(dcAvg_gp(:,1:2,:,cond,:),5, 'omitnan')*sclConc,1,[]));
+% %     ymax=max(reshape(mean(dcAvg_gp(:,1:2,:,cond,:),5, 'omitnan')*sclConc,1,[]));
+%     
+%     for channel=1:size(dcAvg_gp,3)
+% 
+%         subplot(7,7,ch_location(channel), 'replace') % grid size
+%         
+%         SigHbO=mean(dcAvg_gp(:,1,channel,cond,:),5,'omitnan')*sclConc;
+%         SigHbR=mean(dcAvg_gp(:,2,channel,cond,:),5,'omitnan')*sclConc;
+%         
+%         plot(tHRF,SigHbO,'color','r','linewidth',2), hold on
+%         plot(tHRF,SigHbR,'color','b','linewidth',2)
+%         
+%         plot([tHRF(1) tHRF(end)],[0 0],'k-','linewidth',2)
+% %          plot([0 0],[ymin ymax],'k-','linewidth',2)
+%         title(['S' num2str(ch_list(channel,1)) '-D' num2str(ch_list(channel,2))])
+% %          axis([tHRF(1) tHRF(end) ymin ymax])
+%         axis off
+% %         if channel==1
+% %             legend('HbO','HbR','Location','westoutside')
+% %         end
+%     end
+%     legend({'HbO','HbR'},'Position', [0.3 0.3 0.05 0.05])
+% end
 
 
 %% Calculate signal mean within the period of 0 to 3 s
@@ -88,33 +89,33 @@ cond_learn_HbO = sm_HbO(:,:,1);
 cond_standard_HbO=sm_HbO(:,:,2);
 cond_omission_HbO=sm_HbO(:,:,3);
 
-csvwrite('cond_learn_HbO.csv', cond_learn_HbO)
-csvwrite('cond_standard_HbO.csv', cond_standard_HbO)
-csvwrite('cond_omission_HbO.csv', cond_omission_HbO)
-
-% HbR
-cond_learn_HbR = sm_HbR(:,:,1);
-cond_standard_HbR=sm_HbR(:,:,2);
-cond_omission_HbR=sm_HbR(:,:,3);
-
-csvwrite('cond_learn_HbR.csv', cond_learn_HbR)
-csvwrite('cond_standard_HbR.csv', cond_standard_HbR)
-csvwrite('cond_omission_HbR.csv', cond_omission_HbR)
-
-%% Find how many subjects are included for each channel
-% fname='channel_N.txt';
-fname='channel_N_gp1920m.txt';
-fid=fopen(fname, 'w');
-n_channel =[];
-n_total_subj=size(dcAvg_gp,5);
-for channel=1:size(dcAvg_gp,3)
-    
-    n_channel = length(find(~isnan(cond_standard_HbO(:,channel))));
-    fprintf(fid, '%d out of %d subjects included in analysis for channel %d\n', ...
-        n_channel, n_total_subj, channel);    
-    
-end
-fclose(fid);
+% csvwrite('cond_learn_HbO.csv', cond_learn_HbO)
+% csvwrite('cond_standard_HbO.csv', cond_standard_HbO)
+% csvwrite('cond_omission_HbO.csv', cond_omission_HbO)
+% 
+% % HbR
+% cond_learn_HbR = sm_HbR(:,:,1);
+% cond_standard_HbR=sm_HbR(:,:,2);
+% cond_omission_HbR=sm_HbR(:,:,3);
+% 
+% csvwrite('cond_learn_HbR.csv', cond_learn_HbR)
+% csvwrite('cond_standard_HbR.csv', cond_standard_HbR)
+% csvwrite('cond_omission_HbR.csv', cond_omission_HbR)
+% 
+% %% Find how many subjects are included for each channel
+% % fname='channel_N.txt';
+% fname='channel_N_gp1920m.txt';
+% fid=fopen(fname, 'w');
+% n_channel =[];
+% n_total_subj=size(dcAvg_gp,5);
+% for channel=1:size(dcAvg_gp,3)
+%     
+%     n_channel = length(find(~isnan(cond_standard_HbO(:,channel))));
+%     fprintf(fid, '%d out of %d subjects included in analysis for channel %d\n', ...
+%         n_channel, n_total_subj, channel);    
+%     
+% end
+% fclose(fid);
     
     
    
@@ -132,12 +133,20 @@ find(ttest(cond_standard_HbO,0,'Tail','right')==1) % all subjs: 7(B5) 8(C5) 11(D
                                                    % group 1718m: none
                                                    % group 1920m: 8(C5) 13(D7) 14(E7)
                                                    
-% find(ttest(cond_standard_HbO,0,'Tail','left')==1) % all subjs: 23(H12)
 
-% %% testing whether HbR signal mean in standard condition significantly > 0
-% % which channels
-% find(ttest(cond_standard_HbR)==1) % 1(A1) 10(A6) 19(G10) 23(H12)
-% find(ttest(cond_standard_HbR,0,'Tail','right')==1) % none
-% find(ttest(cond_standard_HbR,0,'Tail','left')==1) % 1(A1) 3(C3) 10(A6) 19(G10) 23(H12)
-
+%% testing whether HbO signal mean in omission condition significantly > 0
+find(ttest(cond_omission_HbO)==1) % all subjs: 13(D7) 23(H12)
+                                  % group 16m: 1(A1) 7(B5) 13(D7)
+                                  % group 1718m: 23(H12) 24(G13) 25(H13) no occipital regions
+                                  % group 1920m: 9(E5) 14(E7)
+find(ttest(cond_omission_HbO,0,'Tail','right')==1) % all subjs: 7(B5) 13(D7)
+                                                   % group 16m: 7(B5) 13(D7) 15(C8)
+                                                   % group 1718m: 13(D7)
+                                                   % group 1920m: 9(E5) 14(E7)
+                                                   
+%% testing whether HbO signal mean in standard and omission differ significantly
+find(ttest2(cond_standard_HbO, cond_omission_HbO)==1) % all subjs: none
+                                                      % group 16m: 1(A1) 16(E8)
+                                                      % group 1718m: 24(G13)
+                                                      % group 1920m: 8(C5)
 
