@@ -32,37 +32,37 @@ ch_list=SD.MeasList;
 
 clear SD aux d ml procInput procResult s t tIncMan userdata
 
-% %% plot channel signals 
-% 
-% % Assign 25 channel locations on the plot
-% for cond=1:size(dcAvg_gp, 4)
-%     
-%     figure('Name', conditions{cond},'NumberTitle','off','WindowState','maximized')
-% 
-% %     ymin=min(reshape(mean(dcAvg_gp(:,1:2,:,cond,:),5, 'omitnan')*sclConc,1,[]));
-% %     ymax=max(reshape(mean(dcAvg_gp(:,1:2,:,cond,:),5, 'omitnan')*sclConc,1,[]));
-%     
-%     for channel=1:size(dcAvg_gp,3)
-% 
-%         subplot(7,7,ch_location(channel), 'replace') % grid size
-%         
-%         SigHbO=mean(dcAvg_gp(:,1,channel,cond,:),5,'omitnan')*sclConc;
-%         SigHbR=mean(dcAvg_gp(:,2,channel,cond,:),5,'omitnan')*sclConc;
-%         
-%         plot(tHRF,SigHbO,'color','r','linewidth',2), hold on
-%         plot(tHRF,SigHbR,'color','b','linewidth',2)
-%         
-%         plot([tHRF(1) tHRF(end)],[0 0],'k-','linewidth',2)
-% %          plot([0 0],[ymin ymax],'k-','linewidth',2)
-%         title(['S' num2str(ch_list(channel,1)) '-D' num2str(ch_list(channel,2))])
-% %          axis([tHRF(1) tHRF(end) ymin ymax])
-%         axis off
-% %         if channel==1
-% %             legend('HbO','HbR','Location','westoutside')
-% %         end
-%     end
-%     legend({'HbO','HbR'},'Position', [0.3 0.3 0.05 0.05])
-% end
+%% plot channel signals 
+
+% Assign 25 channel locations on the plot
+for cond=1:size(dcAvg_gp, 4)
+    
+    figure('Name', conditions{cond},'NumberTitle','off','WindowState','maximized')
+
+%     ymin=min(reshape(mean(dcAvg_gp(:,1:2,:,cond,:),5, 'omitnan')*sclConc,1,[]));
+%     ymax=max(reshape(mean(dcAvg_gp(:,1:2,:,cond,:),5, 'omitnan')*sclConc,1,[]));
+    
+    for channel=1:size(dcAvg_gp,3)
+
+        subplot(7,7,ch_location(channel), 'replace') % grid size
+        
+        SigHbO=mean(dcAvg_gp(:,1,channel,cond,:),5,'omitnan')*sclConc;
+        SigHbR=mean(dcAvg_gp(:,2,channel,cond,:),5,'omitnan')*sclConc;
+        
+        plot(tHRF,SigHbO,'color','r','linewidth',2), hold on
+        plot(tHRF,SigHbR,'color','b','linewidth',2)
+        
+        plot([tHRF(1) tHRF(end)],[0 0],'k-','linewidth',2)
+%          plot([0 0],[ymin ymax],'k-','linewidth',2)
+        title(['S' num2str(ch_list(channel,1)) '-D' num2str(ch_list(channel,2))])
+%          axis([tHRF(1) tHRF(end) ymin ymax])
+        axis off
+%         if channel==1
+%             legend('HbO','HbR','Location','westoutside')
+%         end
+    end
+    legend({'HbO','HbR'},'Position', [0.3 0.3 0.05 0.05])
+end
 
 
 %% Calculate signal mean within the period of 0 to 3 s
@@ -89,33 +89,33 @@ cond_learn_HbO = sm_HbO(:,:,1);
 cond_standard_HbO=sm_HbO(:,:,2);
 cond_omission_HbO=sm_HbO(:,:,3);
 
-% csvwrite('cond_learn_HbO.csv', cond_learn_HbO)
-% csvwrite('cond_standard_HbO.csv', cond_standard_HbO)
-% csvwrite('cond_omission_HbO.csv', cond_omission_HbO)
-% 
-% % HbR
-% cond_learn_HbR = sm_HbR(:,:,1);
-% cond_standard_HbR=sm_HbR(:,:,2);
-% cond_omission_HbR=sm_HbR(:,:,3);
-% 
-% csvwrite('cond_learn_HbR.csv', cond_learn_HbR)
-% csvwrite('cond_standard_HbR.csv', cond_standard_HbR)
-% csvwrite('cond_omission_HbR.csv', cond_omission_HbR)
-% 
-% %% Find how many subjects are included for each channel
-% % fname='channel_N.txt';
-% fname='channel_N_gp1920m.txt';
-% fid=fopen(fname, 'w');
-% n_channel =[];
-% n_total_subj=size(dcAvg_gp,5);
-% for channel=1:size(dcAvg_gp,3)
-%     
-%     n_channel = length(find(~isnan(cond_standard_HbO(:,channel))));
-%     fprintf(fid, '%d out of %d subjects included in analysis for channel %d\n', ...
-%         n_channel, n_total_subj, channel);    
-%     
-% end
-% fclose(fid);
+csvwrite('cond_learn_HbO.csv', cond_learn_HbO)
+csvwrite('cond_standard_HbO.csv', cond_standard_HbO)
+csvwrite('cond_omission_HbO.csv', cond_omission_HbO)
+
+% HbR
+cond_learn_HbR = sm_HbR(:,:,1);
+cond_standard_HbR=sm_HbR(:,:,2);
+cond_omission_HbR=sm_HbR(:,:,3);
+
+csvwrite('cond_learn_HbR.csv', cond_learn_HbR)
+csvwrite('cond_standard_HbR.csv', cond_standard_HbR)
+csvwrite('cond_omission_HbR.csv', cond_omission_HbR)
+
+%% Find how many subjects are included for each channel
+% fname='channel_N.txt';
+fname='channel_N_gp1920m.txt';
+fid=fopen(fname, 'w');
+n_channel =[];
+n_total_subj=size(dcAvg_gp,5);
+for channel=1:size(dcAvg_gp,3)
+    
+    n_channel = length(find(~isnan(cond_standard_HbO(:,channel))));
+    fprintf(fid, '%d out of %d subjects included in analysis for channel %d\n', ...
+        n_channel, n_total_subj, channel);    
+    
+end
+fclose(fid);
     
     
    
